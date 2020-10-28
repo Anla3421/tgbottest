@@ -121,6 +121,7 @@ func main() {
 				}
 				bot.Send(tgbotapi.NewMessage(JaredID, "有人對你說，他是 "+strconv.Quote(update.Message.Chat.FirstName)+strconv.Quote(update.Message.Chat.LastName)+" 他說： "+update.Message.Text+", ID是 "+strconv.FormatInt(update.Message.Chat.ID, 10)))
 			}
+			fmt.Println("123")
 			bot.Send(msg)
 		}
 	}
