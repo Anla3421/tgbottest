@@ -8,8 +8,10 @@ import (
 )
 
 type Response struct {
-	Name string `json:"name"`
-	Text string `json:"text"`
+	Name      string `json:"name"`
+	Text      string `json:"text"`
+	Idre      string `json:"idre"`
+	Moviename string `json:"moviename"`
 }
 
 func Websql(ID string) Response {

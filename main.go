@@ -5,7 +5,6 @@ import (
 	"log"
 	"server/db/sql"
 	"server/movie"
-
 	"server/webpage"
 	"strconv"
 
@@ -53,13 +52,14 @@ func init() {
 //---------------------------------------------------------------------------
 func main() {
 	go webpage.StartWebServer()
+	go movie.Moviespider()
 	fmt.Println("bot initial")
 	bot, err := tgbotapi.NewBotAPI(BotToken)
 	if err != nil {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = false
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
@@ -98,8 +98,13 @@ func main() {
 			//電影選項回應
 			if update.CallbackQuery.Message.Text == "豆瓣網電影精選" {
 				ID, _ := strconv.Atoi(update.CallbackQuery.Data)
-				msg.Text = "電影推薦TOP" + strconv.Itoa(1+25*(ID)) + "~" + strconv.Itoa(25*(ID+1)) + ":\n" + movie.GetMovieList(ID) + "\n請使用https://movie.douban.com/subject/\n+上述電影的數字來進入該電影之介紹"
-
+				msg.Text = ""
+				for Rank := 25*ID + 1; Rank < 25*ID+26; Rank++ {
+					result := sql.Moviesqlget(Rank).Idre + "  " + sql.Moviesqlget(Rank).Moviename + "\n"
+					msg.Text += result
+				}
+				msg.Text = "電影推薦TOP" + strconv.Itoa(1+25*(ID)) + "~" + strconv.Itoa(25*(ID+1)) + ":\n" +
+					msg.Text + "\n請使用https://movie.douban.com/subject/\n+上述電影的數字來進入該電影之介紹"
 			}
 			bot.Send(msg)
 		}
@@ -121,7 +126,6 @@ func main() {
 				}
 				bot.Send(tgbotapi.NewMessage(JaredID, "有人對你說，他是 "+strconv.Quote(update.Message.Chat.FirstName)+strconv.Quote(update.Message.Chat.LastName)+" 他說： "+update.Message.Text+", ID是 "+strconv.FormatInt(update.Message.Chat.ID, 10)))
 			}
-			fmt.Println("123")
 			bot.Send(msg)
 		}
 	}

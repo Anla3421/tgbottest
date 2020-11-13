@@ -16,7 +16,7 @@ func init() {
 }
 
 func CreateConn() {
-	db, err := sql.Open("mysql", "root:x37211281@tcp(127.0.0.1:3306)/testdb")
+	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/testdb")
 	if err != nil {
 		panic(err.Error())
 	}
