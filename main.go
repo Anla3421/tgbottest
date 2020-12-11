@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"server/db/sql"
+	"server/movie"
+	"server/webpage"
 	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -14,7 +16,7 @@ const BotToken = "1307746334:AAEmCDB1-OdP25rMjOK30zFLjJA8psEUviI"
 
 var Sugar string
 var Arguments string
-var Drinkid int = 4
+var Drinkid int = 0
 
 //Inlinekeyboard Setting
 var InitialKeyboard = tgbotapi.NewInlineKeyboardMarkup(
@@ -70,8 +72,8 @@ var IceKB = tgbotapi.NewInlineKeyboardMarkup(
 
 //---------------------------------------------------------------------------
 func main() {
-	// go webpage.StartWebServer()
-	// go movie.Moviespider()
+	go webpage.StartWebServer()
+	go movie.Moviespider()
 	fmt.Println("bot initial")
 	bot, err := tgbotapi.NewBotAPI(BotToken)
 	if err != nil {
@@ -172,6 +174,7 @@ func main() {
 				case "clear":
 					if update.Message.Chat.ID == JaredID {
 						sql.Drinksqltruncate()
+						Drinkid = 0
 						msg.Text = "table clear complete"
 					} else {
 						msg.Text = "您沒有權限執行這個指令"
