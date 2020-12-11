@@ -2,8 +2,6 @@ package sql
 
 import (
 	"fmt"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 //撈資料放DB

@@ -2,9 +2,6 @@ package sql
 
 import (
 	"fmt"
-
-	_ "github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type Response struct {
@@ -12,6 +9,11 @@ type Response struct {
 	Text      string `json:"text"`
 	Idre      string `json:"idre"`
 	Moviename string `json:"moviename"`
+	ID        int    `json:"id"`
+	Who       string `json:"who"`
+	Drink     string `json:"drink"`
+	Sugar     string `json:"sugar"`
+	Ice       string `json:"ice"`
 }
 
 func Websql(ID string) Response {
